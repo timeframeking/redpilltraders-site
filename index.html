@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red Pill Trading</title>
+<meta name="description" content="Stay blue and join the free Discord, or take the red pill: watch TFK trade the NY session live 5 days a week, group calls twice a week, the full supply and demand library and the RedPill Dashboard.">
+<meta property="og:title" content="Red Pill Trading">
+<meta property="og:description" content="Free Discord, or the full Red Pill membership. Your call.">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#E10600; --red-deep:#A80400;
+    --blue:#1E3FD6; --blue-deep:#122A9E;
+    --black:#000; --white:#fff;
+    --paper:#F1F2F4; --grey:#5B6070; --rule:#D6D8DE;
+    --app:#0B0B0D; --app-2:#141418; --app-line:#24242B; --app-mute:#8B8B96; --win:#22C55E;
+    --display:"Big Shoulders Display",Impact,sans-serif;
+    --body:"IBM Plex Sans",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--black);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  :focus-visible{outline:3px solid #FFD400;outline-offset:3px}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+  .num{font-variant-numeric:tabular-nums}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--body);font-weight:700;font-size:16px;text-decoration:none;padding:16px 28px;border-radius:999px;border:2px solid transparent;transition:transform .15s,background .15s,color .15s;white-space:nowrap}
+  .btn:active{transform:scale(.97)}
+  .btn-white{background:#fff;color:#000}
+  .btn-white:hover{background:#000;color:#fff}
+  .btn-red{background:var(--red);color:#fff}
+  .btn-red:hover{background:var(--red-deep)}
+  .btn-blue{background:var(--blue);color:#fff}
+  .btn-blue:hover{background:var(--blue-deep)}
+  .btn-line{border-color:currentColor;background:transparent}
+  .btn-line:hover{background:#fff;color:#000;border-color:#fff}
+  .btn svg{flex:none}
+
+  /* ---------------- Top bar ---------------- */
+  .bar{position:absolute;top:0;left:0;right:0;z-index:5;color:#fff}
+  .bar .wrap{display:flex;justify-content:space-between;align-items:center;height:76px;max-width:none;padding:0 32px}
+  .logo{font-family:var(--display);font-weight:900;font-size:28px;letter-spacing:.04em;text-decoration:none;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+  .logo i{display:block;width:30px;height:14px;border-radius:7px;background:linear-gradient(90deg,var(--blue) 50%,var(--red) 50%);box-shadow:0 0 0 2px #fff;transform:rotate(-35deg)}
+  .bar nav{display:flex;align-items:center;gap:26px;font-weight:500;font-size:15px}
+  .bar nav a{text-decoration:none;opacity:.85}
+  .bar nav a:hover{opacity:1}
+  .bar .login{opacity:1;display:inline-flex;align-items:center;gap:8px;border:1.5px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 16px}
+  .bar .login:hover{background:#fff;color:#000}
+
+  /* ---------------- Hero: the choice ---------------- */
+  .choice{position:relative;min-height:100svh;display:flex;color:#fff;overflow:hidden;background:#000}
+  .side{position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 56px 64px;transition:flex-grow .45s cubic-bezier(.2,.7,.2,1)}
+  .side.blue{background:var(--blue)}
+  .side.red{background:var(--red)}
+  @media (hover:hover) and (min-width:901px){
+    .choice:has(.blue:hover) .blue,.choice:has(.red:hover) .red{flex-grow:1.35}
+  }
+  .side .tag{font-weight:600;font-size:15px;opacity:.85}
+  .side h2{font-family:var(--display);font-weight:900;font-size:clamp(44px,4.6vw,72px);line-height:.92;text-transform:uppercase;margin:10px 0 14px}
+  .side p{max-width:25em;opacity:.92}
+  .side .go{margin-top:28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .price{font-family:var(--display);font-weight:800;font-size:34px;line-height:1;display:inline-flex;align-items:baseline;gap:8px}
+  .price s{font-size:22px;opacity:.6;font-weight:700}
+  .price small{font-family:var(--body);font-size:14px;font-weight:500;opacity:.85}
+  .side.red{align-items:flex-end;text-align:right}
+  .side.red .go{justify-content:flex-end}
+
+  .headline{position:absolute;z-index:2;left:0;right:0;top:clamp(110px,16vh,170px);text-align:center;pointer-events:none;padding:0 20px}
+  .headline h1{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(64px,11vw,176px);line-height:.84;letter-spacing:.005em}
+  .headline p{margin-top:18px;font-size:18px;font-weight:500}
+
+  .capsule{position:absolute;z-index:1;left:50%;top:67%;width:min(28vw,360px);aspect-ratio:2.5/1;border-radius:999px;transform:translate(-50%,-50%) rotate(-28deg);
+    background:linear-gradient(90deg,#2E52F0 0 50%,#FF2A1F 50% 100%);
+    box-shadow:inset 0 -18px 30px rgba(0,0,0,.28),inset 0 14px 22px rgba(255,255,255,.35),0 30px 60px rgba(0,0,0,.35);
+    animation:settle 1.1s cubic-bezier(.2,.8,.2,1) both}
+  .capsule::after{content:"";position:absolute;left:8%;right:8%;top:16%;height:14%;border-radius:999px;background:rgba(255,255,255,.45);filter:blur(2px)}
+  @keyframes settle{from{transform:translate(-50%,-30%) rotate(-70deg);opacity:0}to{transform:translate(-50%,-50%) rotate(-28deg);opacity:1}}
+  @media (prefers-reduced-motion:reduce){.capsule{animation:none}.side{transition:none}html{scroll-behavior:auto}}
+
+  /* ---------------- Proof strip ---------------- */
+  .strip{background:#000;color:#fff}
+  .strip .wrap{display:flex;justify-content:space-between;align-items:center;gap:24px;padding-top:26px;padding-bottom:26px;flex-wrap:wrap}
+  .strip .fig{display:flex;align-items:baseline;gap:12px}
+  .strip b{font-family:var(--display);font-weight:800;font-size:44px;line-height:1}
+  .strip span{color:#A9ADB8;font-size:15px}
+
+  /* ---------------- Sections ---------------- */
+  section{padding:120px 0}
+  .h{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(48px,6.6vw,96px);line-height:.88;max-width:13em}
+  .intro{margin-top:20px;max-width:34em;color:var(--grey);font-size:19px}
+
+  /* Day inside */
+  .day{margin-top:72px;display:grid;grid-template-columns:repeat(4,1fr);position:relative}
+  .day::before{content:"";position:absolute;left:0;right:0;top:11px;height:2px;background:#000}
+  .step{padding-right:28px;position:relative}
+  .step .dot{width:24px;height:24px;border-radius:50%;background:var(--paper);border:2px solid #000;position:relative}
+  .step.live .dot{background:var(--red);border-color:var(--red)}
+  .step.live .dot::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--red);opacity:.35}
+  .step .when{margin-top:26px;font-weight:600;font-size:14px;color:var(--grey)}
+  .step h3{font-family:var(--display);font-weight:800;font-size:34px;line-height:1;text-transform:uppercase;margin:6px 0 12px}
+  .step p{color:#2A2E38;font-size:16px}
+  .extras{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid #000}
+  .extra{padding:28px 28px 0 0}
+  .extra + .extra{padding-left:28px;border-left:1px solid var(--rule)}
+  .extra b{display:block;font-size:19px;margin-bottom:6px}
+  .extra p{color:#2A2E38;font-size:16px}
+
+  /* ---------------- Dashboard ---------------- */
+  .dash{background:#000;color:#fff;overflow:hidden}
+  .dash-head{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
+  .dash .intro{color:#A9ADB8}
+  .members-only{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;font-weight:600;font-size:14px;padding:6px 14px;border-radius:999px;margin-bottom:22px}
+  .dash .actions{display:flex;gap:14px;flex-wrap:wrap}
+
+  .app{margin-top:56px;border-radius:16px;background:var(--app);border:1px solid var(--app-line);overflow:hidden;box-shadow:0 40px 100px rgba(225,6,0,.12)}
+  .app-ticker{display:flex;gap:28px;padding:10px 18px;border-bottom:1px solid var(--app-line);font-family:var(--mono);font-size:12px;white-space:nowrap;overflow:hidden;color:#D5D5DC}
+  .app-ticker .up{color:var(--win)} .app-ticker .dn{color:#FF4D4D}
+  .app-body{display:grid;grid-template-columns:200px 1fr}
+  .app-nav{border-right:1px solid var(--app-line);padding:18px 12px;font-size:13px;color:#C5C5CE}
+  .app-nav .brand{display:flex;align-items:center;gap:8px;font-weight:700;color:#fff;margin:0 6px 18px;font-size:13px;letter-spacing:.04em}
+  .app-nav .brand i{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff6a63,var(--red) 60%,#7a0300)}
+  .app-nav .grp{color:var(--app-mute);font-size:11px;margin:16px 6px 6px}
+  .app-nav a{display:flex;justify-content:space-between;padding:7px 8px;border-radius:7px;text-decoration:none}
+  .app-nav a.on{background:#2A0B0B;color:#fff;box-shadow:inset 0 0 0 1px #5A1414}
+  .app-nav a span{font-family:var(--mono);font-size:11px;color:var(--app-mute)}
+  .app-main{padding:22px 24px 26px;min-width:0}
+  .app-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .app-title b{font-size:22px}
+  .app-title span{font-size:12px;color:var(--app-mute)}
+  .sample{font-family:var(--mono);font-size:11px;color:var(--app-mute);border:1px solid var(--app-line);border-radius:4px;padding:2px 6px}
+  .tiles{margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .tile{background:var(--app-2);border:1px solid var(--app-line);border-radius:10px;padding:12px 14px}
+  .tile small{display:block;font-size:11px;color:var(--app-mute)}
+  .tile b{display:block;font-family:var(--mono);font-size:22px;margin-top:4px}
+  .tile .g{color:var(--win)}
+  .app-grid{margin-top:12px;display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
+  .card{background:var(--app-2);border:1px solid var(--app-line);border-radius:10px;padding:14px 16px;min-width:0}
+  .card h4{font-size:12px;font-weight:700;letter-spacing:.02em;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .card h4::before{content:"";width:3px;height:12px;background:var(--red);border-radius:2px}
+  .card svg{width:100%;height:auto;display:block}
+  .works{width:100%;border-collapse:collapse;font-size:12px}
+  .works th{color:var(--app-mute);font-weight:500;text-align:left;padding:6px 4px;border-bottom:1px solid var(--app-line)}
+  .works td{padding:8px 4px;border-bottom:1px solid var(--app-line);font-family:var(--mono)}
+  .works td:first-child{font-family:var(--body);font-weight:600}
+  .pos{color:var(--win)} .neg{color:#FF4D4D}
+  .verdict{font-family:var(--body);font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
+  .verdict.edge{background:#0F2A18;color:var(--win)}
+  .verdict.bleed{background:#2A0E0E;color:#FF6B6B}
+
+  .screen{margin-top:56px;position:relative;border-radius:16px;background:#0E0F13;border:1px solid #262833;aspect-ratio:16/8;overflow:hidden;box-shadow:0 40px 100px rgba(225,6,0,.12)}
+  .screen .ui{position:absolute;inset:0;display:grid;grid-template-columns:20% 1fr;filter:blur(8px);opacity:.9}
+  .screen .rail{background:#15171E;padding:26px 16px;display:grid;align-content:start;gap:14px}
+  .screen .rail i{display:block;height:12px;border-radius:6px;background:#2A2D38}
+  .screen .rail i:first-child{background:var(--red);width:60%}
+  .screen .main{padding:26px;display:grid;grid-template-rows:auto 1fr auto;gap:18px}
+  .screen .row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .screen .tile{height:70px;border-radius:10px;background:#1A1C25}
+  .screen .tile:nth-child(2){background:#2A1215}
+  .screen .tile:nth-child(3){background:#141B33}
+  .screen .chartbox{border-radius:10px;background:#15171E;position:relative;overflow:hidden}
+  .screen .chartbox svg{position:absolute;inset:0;width:100%;height:100%}
+  .screen .list{display:grid;gap:10px}
+  .screen .list i{display:block;height:14px;border-radius:7px;background:#1F222C}
+  .lock{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;background:radial-gradient(closest-side,rgba(0,0,0,.6),rgba(0,0,0,.1))}
+  .lock div{display:grid;justify-items:center;gap:12px}
+  .lock b{font-family:var(--display);font-weight:800;font-size:clamp(28px,3.4vw,44px);text-transform:uppercase;line-height:1}
+  .lock span{color:#C9CCD4;font-size:16px}
+  @media (max-width:640px){.screen{aspect-ratio:4/5;margin-top:40px}.screen .ui{grid-template-columns:1fr}.screen .rail{display:none}.screen .row{grid-template-columns:1fr 1fr}}
+
+  .modules{margin-top:72px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#26262E;border:1px solid #26262E;border-radius:16px;overflow:hidden}
+  .mod{background:#000;padding:30px 28px 32px}
+  .mod .grp{font-size:13px;color:var(--red);font-weight:600}
+  .mod h3{font-family:var(--display);font-weight:800;font-size:30px;text-transform:uppercase;line-height:1;margin:8px 0 10px}
+  .mod p{color:#B4B7C1;font-size:16px}
+
+  /* ---------------- Blue vs red ---------------- */
+  .compare{margin-top:64px;border-top:2px solid #000}
+  .compare table{width:100%;border-collapse:collapse}
+  .compare th,.compare td{padding:18px 16px;text-align:left;border-bottom:1px solid var(--rule)}
+  .compare thead th{font-family:var(--display);font-weight:900;font-size:34px;text-transform:uppercase;line-height:1;padding-top:26px;padding-bottom:22px;vertical-align:bottom}
+  .compare thead th small{display:block;font-family:var(--body);font-size:14px;font-weight:500;color:var(--grey);text-transform:none;margin-top:6px}
+  .compare .c{width:22%;text-align:center}
+  .compare thead .c-blue{color:var(--blue)}
+  .compare thead .c-red{color:#fff;background:var(--red)}
+  .compare thead .c-red small{color:#FFD9D7}
+  .compare tbody td.c-red{background:#FBE4E3}
+  .compare tbody td:first-child{font-weight:500}
+  .compare tbody td:first-child small{display:block;color:var(--grey);font-weight:400;font-size:14px}
+  .yes{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#000;color:#fff}
+  .c-red .yes{background:var(--red)}
+  .no{color:#A2A6B1}
+  .compare tfoot td{border-bottom:0;padding-top:24px}
+  .compare tfoot td.c-red{background:#FBE4E3;border-radius:0 0 14px 14px;padding-bottom:24px}
+  .compare tfoot .btn{width:100%;padding:14px 16px}
+  .sr{position:absolute;left:-9999px}
+
+  /* ---------------- Members (Discord style) ---------------- */
+  .members{background:#fff}
+  .wall{margin-top:56px;columns:2 460px;column-gap:20px}
+  .msg{break-inside:avoid;margin:0 0 20px;background:#1E1F22;color:#DBDEE1;border-radius:14px;padding:20px 22px 22px;display:grid;grid-template-columns:44px 1fr;gap:14px;font-family:"gg sans","Noto Sans",var(--body);font-size:16px;line-height:1.5}
+  .msg img{width:44px;height:44px;border-radius:50%}
+  .msg .who{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+  .msg .who b{color:#F23F42;font-weight:600}
+  .msg .who span{font-size:12px;color:#949BA4}
+  .msg p + p{margin-top:10px}
+
+
+  /* ---------------- FAQ ---------------- */
+  .faq .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:start}
+  details{border-top:2px solid #000}
+  details:last-child{border-bottom:2px solid #000}
+  summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;align-items:center;padding:24px 0;font-weight:600;font-size:20px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"";flex:none;width:14px;height:14px;border-right:2.5px solid var(--red);border-bottom:2.5px solid var(--red);transform:rotate(45deg) translateY(-4px);transition:transform .2s}
+  details[open] summary::after{transform:rotate(225deg) translateY(-4px)}
+  details p{padding:0 0 26px;color:#2A2E38;max-width:38em}
+
+  /* ---------------- Final choice ---------------- */
+  .last{display:grid;grid-template-columns:1fr 1fr;color:#fff}
+  .last > div{padding:96px 56px}
+  .last .blue{background:var(--blue)}
+  .last .red{background:var(--red)}
+  .last h2{font-family:var(--display);font-weight:900;font-size:clamp(48px,6vw,88px);line-height:.88;text-transform:uppercase;margin-bottom:18px}
+  .last p{max-width:24em;margin-bottom:30px;opacity:.92}
+
+  footer{background:#000;color:#A9ADB8;font-size:14px;padding:56px 0 64px}
+  footer .top{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:32px;color:#fff}
+  footer .links{display:flex;gap:24px;flex-wrap:wrap}
+  footer .links a{text-decoration:none;color:#C9CCD4}
+  footer .links a:hover{color:#fff}
+  .disclaimer{font-size:13px;line-height:1.65;max-width:70em;color:#80848F}
+
+  /* ---------------- Responsive ---------------- */
+  @media (max-width:1100px){
+    .app-body{grid-template-columns:1fr}
+    .app-nav{display:none}
+  }
+  @media (max-width:1000px){
+    .bar nav .hide-md{display:none}
+    .day{grid-template-columns:1fr 1fr;row-gap:48px}
+    .day::before{display:none}
+    .faq .wrap{grid-template-columns:1fr;gap:48px}
+    .dash-head{grid-template-columns:1fr}
+    .modules{grid-template-columns:1fr 1fr}
+    .extras{grid-template-columns:1fr}
+    .extra + .extra{padding-left:0;border-left:0;border-top:1px solid var(--rule);margin-top:28px}
+  }
+  @media (max-width:900px){
+    .choice{flex-direction:column;min-height:0}
+    .headline{position:relative;top:auto;padding:120px 20px 40px;background:#000}
+    .capsule{display:none}
+    .side,.side.red{padding:44px 24px 48px;align-items:flex-start;text-align:left;justify-content:flex-start}
+    .side.red{order:2}.side.blue{order:3}
+    .side.red .go{justify-content:flex-start}
+    .last{grid-template-columns:1fr}
+    .last > div{padding:64px 24px}
+    .last .red{order:-1}
+    .tiles{grid-template-columns:1fr 1fr}
+    .app-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 16px}
+    .bar .wrap{padding:0 16px;height:64px}
+    .bar nav{gap:14px}
+    .bar .login{padding:7px 12px;font-size:14px}
+    .logo{font-size:24px}
+    section{padding:80px 0}
+    .day{grid-template-columns:1fr}
+    .strip .wrap{flex-direction:column;align-items:flex-start;gap:14px}
+    .strip b{font-size:36px}
+    .compare{margin-left:-16px;margin-right:-16px;overflow-x:auto}
+    .compare th,.compare td{padding:14px 10px;font-size:15px}
+    .compare tbody td:first-child small{font-size:13px}
+    .compare thead th{font-size:24px}
+    .compare .c{width:26%}
+    .compare tfoot .btn{font-size:14px;padding:12px 8px;white-space:normal;border-radius:12px;line-height:1.2}
+    .side h2{font-size:48px}
+    .modules{grid-template-columns:1fr}
+    .app-main{padding:16px}
+    .app{margin-left:-4px;margin-right:-4px}
+    .wall{columns:1}
+    .msg{padding:16px;grid-template-columns:36px 1fr;gap:12px;font-size:15px}
+    .msg img{width:36px;height:36px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ EDIT YOUR LINKS HERE ============ -->
+<script>
+  const LINKS = {
+    whop:      "https://whop.com/timeframeking/products/red-pill-discord-access/",
+    discord:   "https://discord.com/invite/xEvvyYxjez",
+    dashboard: "https://dashboard.redpilltraders.com/"
+  };
+</script>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top"><i aria-hidden="true"></i>Red Pill</a>
+    <nav aria-label="Main">
+      <a class="hide-md" href="#inside">Inside</a>
+      <a class="hide-md" href="#dashboard">Dashboard</a>
+      <a class="hide-md" href="#members">Members</a>
+      <a class="hide-md" href="#compare">Free vs Red</a>
+      <a class="login" data-link="dashboard" href="https://dashboard.redpilltraders.com/">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        Member login
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ The choice ============ -->
+  <div class="choice">
+    <div class="headline">
+      <h1>Stay blue.<br>Or take the red pill.</h1>
+      <p>Two ways in. One of them changes how you trade.</p>
+    </div>
+    <div class="capsule" aria-hidden="true"></div>
+
+    <div class="side blue">
+      <div class="tag">Blue pill · free</div>
+      <h2>Join the<br>Discord</h2>
+      <p>Hang out with the community, see how we talk about the market and meet the traders. No card needed.</p>
+      <div class="go">
+        <a class="btn btn-white" data-link="discord" href="https://discord.com/invite/xEvvyYxjez">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.5 19.5 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18.1a19.8 19.8 0 0 0 6 3l1.3-2a12.7 12.7 0 0 1-2-1l.5-.4a14 14 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.7 19.7 0 0 0 6-3c.5-5.2-.9-9.7-3.6-13.7ZM8 15.4c-1.2 0-2.2-1.1-2.2-2.4S6.8 10.6 8 10.6s2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>
+          Join free Discord
+        </a>
+      </div>
+    </div>
+
+    <div class="side red">
+      <div class="tag">Red pill · full access</div>
+      <h2>Watch a <span style="white-space:nowrap">full-time</span><br>trader, live</h2>
+      <p>TFK trades the NY session live 5 days a week. You also get group calls twice a week, the full supply and demand system, the RedPill Dashboard and direct access to TFK.</p>
+      <div class="go">
+        <span class="price num"><s>$150</s>$120<small>/mo</small></span>
+        <a class="btn btn-white" data-link="whop" href="https://whop.com/timeframeking/products/red-pill-discord-access/">Take the red pill</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Proof strip ============ -->
+  <div class="strip">
+    <div class="wrap">
+      <div class="fig"><b class="num">5</b><span>live sessions a week</span></div>
+      <div class="fig"><b class="num">4–5h</b><span>per NY session stream</span></div>
+      <div class="fig"><b class="num">6+</b><span>years trading</span></div>
+      <div class="fig"><b class="num">5.0</b><span>rating on Whop</span></div>
+    </div>
+  </div>
+
+  <!-- ============ A day inside ============ -->
+  <section id="inside">
+    <div class="wrap">
+      <h2 class="h">A trading day inside Red Pill</h2>
+      <p class="intro">Real trades, real process, in real time. You learn the exact system by watching it get traded every day, then you work on your own trading in the dashboard.</p>
+
+      <div class="day">
+        <div class="step">
+          <div class="dot"></div>
+          <div class="when">Before the open</div>
+          <h3>Get ready</h3>
+          <p>Work through your daily checklist in the dashboard and mark your zones before the bell.</p>
+        </div>
+        <div class="step live">
+          <div class="dot"></div>
+          <div class="when">NY session, Monday to Friday</div>
+          <h3>Trade live</h3>
+          <p>Watch TFK trade the NY session in real time, 4 to 5 hours per stream. Ask questions while it happens.</p>
+        </div>
+        <div class="step">
+          <div class="dot"></div>
+          <div class="when">After the close</div>
+          <h3>Debrief</h3>
+          <p>Log your trades in the journal, write your post-market review and see what's working in your analytics.</p>
+        </div>
+        <div class="step">
+          <div class="dot"></div>
+          <div class="when">Twice a week</div>
+          <h3>Group calls</h3>
+          <p>Trade reviews, zone breakdowns and Q&amp;A with the rest of the room.</p>
+        </div>
+      </div>
+
+      <div class="extras">
+        <div class="extra"><b>The full video library</b><p>How to identify, grade and trade the right supply and demand zones, in order from the basics.</p></div>
+        <div class="extra"><b>The Supply &amp; Demand e-book</b><p>The complete strategy explained from the ground up.</p></div>
+        <div class="extra"><b>Swing trade callouts</b><p>Longer-term setups for futures, stocks and crypto, with the full reasoning behind every trade.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Dashboard ============ -->
+  <section class="dash" id="dashboard">
+    <div class="wrap">
+      <div class="dash-head">
+        <div>
+          <div class="members-only">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            Red members only
+          </div>
+          <h2 class="h">The RedPill Dashboard</h2>
+          <p class="intro">Our private site for Red members. Learn the system, journal every trade and find out exactly what makes you money and what bleeds it.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-red" data-link="whop" href="https://whop.com/timeframeking/products/red-pill-discord-access/">Get access</a>
+          <a class="btn btn-line" data-link="dashboard" href="https://dashboard.redpilltraders.com/">Member login</a>
+        </div>
+      </div>
+
+      <div class="screen" role="img" aria-label="Preview of the RedPill Dashboard, locked for non-members">
+        <div class="ui" aria-hidden="true">
+          <div class="rail"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="main">
+            <div class="row"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+            <div class="chartbox">
+              <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+                <rect x="0" y="130" width="400" height="30" fill="#1E3FD6" opacity=".4"/>
+                <rect x="0" y="30" width="400" height="24" fill="#E10600" opacity=".4"/>
+                <polyline fill="none" stroke="#fff" stroke-width="3" points="0,70 40,90 80,80 120,120 160,140 200,135 240,100 280,110 320,70 360,55 400,40"/>
+              </svg>
+            </div>
+            <div class="list"><i></i><i style="width:80%"></i><i style="width:90%"></i></div>
+          </div>
+        </div>
+        <div class="lock"><div>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          <b>Take the red pill to unlock</b>
+          <span>Included with every Red Pill membership</span>
+        </div></div>
+      </div>
+
+      <div class="modules">
+        <div class="mod"><div class="grp">Learn</div><h3>Education</h3><p>The video library in the order to watch it, plus guides on candlesticks, zone formation, trend, reversals, the curve and setups.</p></div>
+        <div class="mod"><div class="grp">Daily ops</div><h3>Daily checklist</h3><p>The routine that keeps you disciplined, ticked off task by task through the trading day.</p></div>
+        <div class="mod"><div class="grp">Journal</div><h3>Trade journal</h3><p>Log live and backtest trades, tagged by session, HTF zone, timeframe, formation and grade. Export to CSV.</p></div>
+        <div class="mod"><div class="grp">Journal</div><h3>Analytics</h3><p>Expectancy, profit factor, R distribution, your P&amp;L calendar and what you left on the table, all ranked by what works.</p></div>
+        <div class="mod"><div class="grp">Journal</div><h3>Post market</h3><p>A daily debrief plus a monthly report that counts the month honestly, win or lose.</p></div>
+        <div class="mod"><div class="grp">Community</div><h3>Discipline board</h3><p>A leaderboard ranked on consistency first, in R and never dollars, plus chat and announcements.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Members ============ -->
+  <section class="members" id="members">
+    <div class="wrap">
+      <h2 class="h">Straight from the Discord</h2>
+      <p class="intro">What Red Pill members say about the room and about TFK (Vini).</p>
+
+      <div class="wall">
+        <figure class="msg big">
+          <img src="data:image/jpeg;base64,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" alt="">
+          <div>
+            <div class="who"><b>Carlo</b><span>Red Pill member</span></div>
+            <p>Vini is honestly one of the best mentors out there. He doesn't just give basic advice, he actually breaks down what you're doing wrong and helps you understand how to fix it. He explains things clearly, answers every question, and gives real feedback on trades so you can actually improve instead of repeating the same mistakes.</p>
+            <p>Obviously, trading still takes time, patience, and effort on your own end. But having someone like Vini guide you makes the process feel a lot more manageable. The signals he provides have also been super helpful to look at and see if you are marking out the correct setups, and he gives members extra support while they're still learning or even far down the road with profitability.</p>
+            <p>You can tell he really cares about helping people succeed, and that makes a big difference. Plus, he's a fun mentor and has a great work/life balance and is enjoyable to be around.</p>
+            <p>Take the Red Pill, it's the TRUTH.<br>#MakeSupply&amp;DemandGreatAgain</p>
+          </div>
+        </figure>
+
+        <figure class="msg">
+          <img src="data:image/jpeg;base64,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" alt="">
+          <div>
+            <div class="who"><b>PDR</b><span>Red Pill member</span></div>
+            <p>Before joining the mentorship, I didn't really understand how the market moved and I was taking trades without confidence. After learning supply and demand from him, my whole perspective changed. My entries became cleaner, I started being more patient, and I finally feel like I'm trading with a real strategy instead of gambling</p>
+            <p>Thanks Vini🙌<br>Best brazilian ever💪💪</p>
+          </div>
+        </figure>
+
+        <figure class="msg">
+          <img src="data:image/jpeg;base64,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" alt="">
+          <div>
+            <div class="who"><b>DannyTrj</b><span>Red Pill member</span></div>
+            <p>No joke, genuinely the best mentor I've ever had, he answers every question until you understand it, and is always there to answer messages, amazing mentor, but overall an amazing soul 🙏</p>
+          </div>
+        </figure>
+
+        <figure class="msg big">
+          <img src="data:image/jpeg;base64,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" alt="">
+          <div>
+            <div class="who"><b>Manuelinhooo</b><span>Red Pill member</span></div>
+            <p>Vini is hands down the best mentor. He can spot almost every problem and mistake in your trading and actually help you fix it. He shares a ton of knowledge and explains everything in a very detailed and understandable way. Every question gets answered, he reviews your trades and tells you exactly what you can improve, and gives you tips so you don't keep making the same mistakes.</p>
+            <p>That being said, you still have to put in the work yourself. Learning trading takes a lot of time and effort. But because it's so time consuming, Vini also drops trading signals which have honestly been a blessing for all members they're even helping me pass my trading challenge right now.</p>
+            <p>You can really tell that he's passionate about what he does and that he genuinely cares and that makes a huge difference.</p>
+            <p>Red Pill Trading really feels like a gift.</p>
+          </div>
+        </figure>
+
+        <figure class="msg">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABgAGADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5coooPcnoOT7CrAKgmuoojgtlvQVRvL1pt0duSFHVu5pul6TeanJJHZxmWVQCEHfNF7APn1B84Xao/OolubmXJR5X9kFel/DvXND8Kavb6d45+HdpIc4+0ywkSqOxCnhvrX1j4M1DwhqumB/Dy6bJCo/1ccChk9iCMj8ahsD8/Xu7lWx50gI4waki1O5U/NtYe4xX3x4w0/wbLpkjeI7XSVsznc9xEoBPsByT7Cvj34s2nw1S/Y+BbzUpZS/zRGMeR77SfnH0xQmBy9tqMEuA2Y2PY9KuiuYKkHBGCD0r3f4PeFNC+KHw9uNFtpYdO8ZaLl4JDwt9bk5Acdyp+XcOgAqkwPL6Kua3pd/ouq3Gl6pbPbXdu5SWNxyD/Ue9U6YBX0T8E/giutfDTWdf1aMnUdU06aLR4WGPKypAlI9WPA9q8j+EPhNvGvxB0zQmRmtnk826IHSFOWH1I4FfZPi/4n/D/wCHca2mr6uguoowEsLNfMmCgcfKOAPxpiZ+dQje2unt5lKOjlHU8YIODXq37O/h228S+MrnSbi6ktw9uJFaM/NlSOR+ODXK/GvXdB8T/ELUfEHhzTJtNs71/NaCVwx8w/eYYAwCecdqzfBPiS/8Pa5a6pYTmGeBwGcHqh659qkZ9GfFHwZ45ms49FuI9N8R2MR/cXFzbFZlHqkq5IPsRis/4L/DTxBo3ioz6pBe6U/ls6NHc70mXgbWGOeucn0r0nwL4t1bVdMN9a6XLcbX2ToLkAxvgEhhj0II9c16NpkSvereSYy1s7AA7gPlPFQw2PkfxZoms634ludQ1WDxFq+lJM6xxwv2UkAZH3enp+NdP4OM6Rf2f4e+FdnYLt+aS7nLTP7liuB+ddd4M8RNpFvO0kF3Ms148aJbruZ2yT0yKi8ZePbS1MKvNe2ZuM+XAbbEkhHXCg8/WgD5x+MmkS6P4ultrlLdLiYec6wNlV3dugrG8G6/qfg7xLZa/pNwY7i1kDYxw6/xKR3BHGKm8Z6vJ4h8W32pSb9pbagfqAOKxbs7mSFSCzdee9UgPs34yeCdN+JXw/0/xr4fi8vVGsUu4U7zRldxhPqR296+TyCGKkEEdQa+8PhtpJ0T4WeGtPkkWZ4NPiEjI4dQ5UErkccHivlj9ojwsnhzx7LdWkWyx1RTcxgDhZM/Ov55OPSrEjjvDvjnVvBdtqI0GQWt9qEIge7HLxwg5Kp/dJP8XXFcdeajc3U0k80zySyHc7uxZnPqSeppussTelSeAoqlnipbHYc5J5JzSIxDA+lN5IoFSB9Bfs669c6gkumafrEml61FGFSXYJI7iEH5RIh67ScZGG+brXr/AIb1vxdaaxqR1c6K9jKFjSGydoykoyGcBycBsjK5xxxXxh4a1m/8P65a6xpk7Q3VrIHRh0PqD7EZB+te9fFz4haV8Q/gxZPpk8MOtRajF9qs3YCWMbWBZPVMkc9qANrTl8X6Ddam93ZeG0WaeSW3upLtpBEhPQRqeT+Oa8q+Jfiy6jvZ4zqLXurSx+W9wF2LbxH+CNf4c5+uOp5rsvjB8QNN0jw7YeHdBubO7v8A7HEl1LbYKRMEGeR1bOePxrwCSRpZmkmZnZzuZiclj65pAT27eTCzt1PQVWLFjuPU8mllcu3PQcAVHTA7n4bfFHxh4DvI20jU5ZLEMDLYTsXgkHcbT936jBr3P4teItC+KHwYi8WaQohvNJu4/tVqx/eQGT5WHuuOQa+VB1rX8OavfabNPBaTMsV9Eba4QnKup9R6g8j0NNMViPVHVbshg2Co7A1BDNZhh5wn299oXNWddj5jlA9VNZRo2GbttceHQuLhNTJzxsMeKtJdeDQo3Qa3nvhoq5eii4HUNe+EAPktdYJ/2pEqjPeaOGP2eC9Uf7Ug/pWLRRcC3LPAzEokgHu1RvMD90uPxqCikBIZZP77fnTS7/3jTaKAFyan04E3sP8AvA1Xq/oke673kcIpNAGrew+fbOnfGV+tc4wIOD1FdTWTrFoQxuIxwfvD0NU0Bl0UtJUgWLa1uLkSGCB5BEm+QqOEX1J7D60sVpLJ/dQYyC5xXpPiCO30D4R6ZZ28f7/VCJpz0J77TjnghTg8e1cf4bL/ANuWzi3+1COTJjkiLqQASc/WgDFe0mVlXaG3HAwQRk0l5a3FpcPbXULwyocMjrgir1/IWupi8RhLsz+SqbduWPAHpz+ld545gt9Z+GOleJHAW9ikWBnByXXG3BPX5Qi9c/e60AeXUUppKACt7SYPJtgxGGf5j/Ss/TLQzyb3H7tevvW5VIApCAwKkZB60tFMDH1DTyhMkIyndfSs7vXU1VurGCfJK7X/ALy0mgO1jgPjL4Z2MVi4/tHSQY5Yz96VQC2T68Dj6Y9K9w8GeArHVPgvounBUs7ua3Es1ykeHdjvGGI5I5HHtXy5oc+s+HtSXUdHu/LmUYOOAw7gjuK92+Hfx1stP0b7F4l0q/FwJCVktlDpt4xx1z1qQNH9ojwXBF8P9Dj0uzSS/guobUzon7yVdhBLEckZUHnoK8j+JkkOh+FNO8IpMk1wpE8rpzhRkgE9/mZ8fr2rsfil8a7rWZIovCmn3dtGi8zXCgEN/eUdvxrxa4ttQv7uS6vZS00rFndzksT3p2AzG96t2Fg85DvlI/1P0rRttOgiIZh5jD16flVymkA2NFjQIgwo6U6iimB//9k=" alt="">
+          <div>
+            <div class="who"><b>Tate</b><span>Red Pill member</span></div>
+            <p>I feel like I've finally found a real mentor. Joining this community has truly been a blessing in my life.</p>
+            <p>Vini is someone who can genuinely change people's lives. His knowledge of trading, risk management, and overall market understanding is incredible. Everything is explained clearly and with purpose.</p>
+            <p>I've learned so much already, and I'm grateful to be here. Thank you for everything, Vini. I appreciate the time and effort you put into helping everyone succeed.</p>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Free vs Red ============ -->
+  <section id="compare">
+    <div class="wrap">
+      <h2 class="h">Blue or red?</h2>
+      <p class="intro">Start free in the Discord. Take the red pill when you want to watch the trades live, learn the full system and use the dashboard.</p>
+
+      <div class="compare">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr">Feature</span></th>
+              <th scope="col" class="c c-blue">Blue<small>Free</small></th>
+              <th scope="col" class="c c-red">Red<small class="num"><s>$150</s> $120/mo</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Discord community</td><td class="c"><span class="yes">✓</span></td><td class="c c-red"><span class="yes">✓</span></td></tr>
+            <tr><td>Live trading, 5 days a week<small>NY session, 4 to 5 hours per stream</small></td><td class="c"><span class="no">—</span></td><td class="c c-red"><span class="yes">✓</span></td></tr>
+            <tr><td>Group calls, twice a week<small>Trade reviews, zone breakdowns, Q&amp;A</small></td><td class="c"><span class="no">—</span></td><td class="c c-red"><span class="yes">✓</span></td></tr>
+            <tr><td>Full video library</td><td class="c"><span class="no">—</span></td><td class="c c-red"><span class="yes">✓</span></td></tr>
+            <tr><td>Supply &amp; Demand e-book</td><td class="c"><span class="no">—</span></td><td class="c c-red"><span class="yes">✓</span></td></tr>
+            <tr><td>Swing trade callouts<small>Futures, stocks and crypto</small></td><td class="c"><span class="no">—</span></td><td class="c c-red"><span class="yes">✓</span></td></tr>
+            <tr><td>RedPill Dashboard<small>Journal, analytics, reviews, leaderboard</small></td><td class="c"><span class="no">—</span></td><td class="c c-red"><span class="yes">✓</span></td></tr>
+            <tr><td>Direct access to TFK<small>Ask questions, get real answers every day</small></td><td class="c"><span class="no">—</span></td><td class="c c-red"><span class="yes">✓</span></td></tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td class="c"><a class="btn btn-blue" data-link="discord" href="https://discord.com/invite/xEvvyYxjez">Join free</a></td>
+              <td class="c c-red"><a class="btn btn-red" data-link="whop" href="https://whop.com/timeframeking/products/red-pill-discord-access/">Take the red pill</a></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq" id="faq" style="padding-top:0">
+    <div class="wrap">
+      <h2 class="h">Questions</h2>
+      <div>
+        <details>
+          <summary>Who is TFK?</summary>
+          <p>TFK (timeframeking) is Vini, a full-time supply and demand trader with 6+ years of experience. He trades the NY session live for members every weekday.</p>
+        </details>
+        <details>
+          <summary>What's the difference between the free Discord and Red Pill?</summary>
+          <p>The free Discord gets you into the community. Red Pill adds the live trading streams, group calls twice a week, the video library, the e-book, swing trade callouts, the RedPill Dashboard and direct access to TFK.</p>
+        </details>
+        <details>
+          <summary>How do I get the red pill?</summary>
+          <p>Join through Whop. Your access unlocks as soon as checkout is done.</p>
+        </details>
+        <details>
+          <summary>How do I get into the dashboard?</summary>
+          <p>The RedPill Dashboard is included with your membership. Use Member login at the top of this page to sign in.</p>
+        </details>
+        <details>
+          <summary>What markets do you trade?</summary>
+          <p>Futures, stocks and crypto, all with the same supply and demand system.</p>
+        </details>
+        <details>
+          <summary>Can I cancel?</summary>
+          <p>Yes. It's a monthly membership on Whop and you can cancel anytime.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Final choice ============ -->
+  <div class="last">
+    <div class="blue">
+      <h2>Stay<br>blue</h2>
+      <p>Come see what we're about. The Discord is free.</p>
+      <a class="btn btn-white" data-link="discord" href="https://discord.com/invite/xEvvyYxjez">Join free Discord</a>
+    </div>
+    <div class="red">
+      <h2>Take the<br>red pill</h2>
+      <p>Everything, for <span class="num">$120/mo</span>. Cancel anytime.</p>
+      <a class="btn btn-white" data-link="whop" href="https://whop.com/timeframeking/products/red-pill-discord-access/">Get full access</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <a class="logo" href="#top"><i aria-hidden="true"></i>Red Pill</a>
+      <div class="links">
+        <a data-link="discord" href="https://discord.com/invite/xEvvyYxjez">Free Discord</a>
+        <a data-link="whop" href="https://whop.com/timeframeking/products/red-pill-discord-access/">Membership</a>
+        <a data-link="dashboard" href="https://dashboard.redpilltraders.com/">Member login</a>
+      </div>
+    </div>
+    <p class="disclaimer">
+      © 2026 Red Pill Trading. All rights reserved.<br><br>
+      Testimonials are from real members and reflect their own experience. They are not typical and are not a guarantee of future results.
+      Trading futures, stocks and crypto involves substantial risk of loss and is not suitable for everyone. Red Pill Trading provides education and trade ideas
+      for informational purposes only and is not a registered investment adviser or broker-dealer. Nothing on this site, in the Discord or in the dashboard is financial advice.
+      Past performance does not guarantee future results. Only trade with money you can afford to lose.
+    </p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll("[data-link]").forEach(a => {
+    const url = LINKS[a.dataset.link];
+    if (!url) return;
+    a.href = url;
+    if (/^https?:/.test(url)) { a.target = "_blank"; a.rel = "noopener"; }
+  });
+</script>
+</body>
+</html>
