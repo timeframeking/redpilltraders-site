@@ -249,6 +249,25 @@
   footer .links a:hover{color:#fff}
   .disclaimer{font-size:13px;line-height:1.65;max-width:70em;color:#80848F}
 
+
+  /* Follow TFK */
+  .follow{background:#000;color:#fff;padding:96px 0}
+  .follow .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+  .follow .intro{color:#A9ADB8}
+  .handle{font-family:var(--body);font-weight:600;color:var(--red);font-size:18px;margin-bottom:14px}
+  .socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .social{display:flex;align-items:center;gap:16px;padding:20px 22px;border:1px solid #2A2C35;border-radius:16px;text-decoration:none;background:#0C0D11;transition:border-color .15s,background .15s,transform .15s}
+  .social:hover{border-color:var(--red);background:#150607}
+  .social:active{transform:scale(.98)}
+  .social .ic{flex:none;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:#fff;color:#000}
+  .social b{display:block;font-size:18px;color:#fff}
+  .social span{display:block;font-size:14px;color:#9EA2AD}
+  footer .soc{display:flex;gap:10px}
+  footer .soc a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid #2F323C;color:#fff;transition:background .15s,color .15s}
+  footer .soc a:hover{background:#fff;color:#000}
+  @media (max-width:1000px){.follow .wrap{grid-template-columns:1fr;gap:36px}}
+  @media (max-width:640px){.follow{padding:72px 0}.socials{grid-template-columns:1fr}.social{padding:16px 18px}}
+
   /* ---------------- Responsive ---------------- */
   @media (max-width:1100px){
     .app-body{grid-template-columns:1fr}
@@ -264,18 +283,57 @@
     .extras{grid-template-columns:1fr}
     .extra + .extra{padding-left:0;border-left:0;border-top:1px solid var(--rule);margin-top:28px}
   }
+  /* short or smaller laptop screens: give the hero room */
+  @media (min-width:901px){
+    .choice{min-height:max(100svh,820px)}
+  }
+  @media (min-width:901px) and (max-width:1400px){
+    .capsule{width:190px;top:59%}
+    .side{padding:0 40px 52px}
+    .side h2{font-size:clamp(40px,4.4vw,56px)}
+    .side p{font-size:16px;max-width:22em}
+  }
   @media (max-width:900px){
-    .choice{flex-direction:column;min-height:0}
-    .headline{position:relative;top:auto;padding:120px 20px 40px;background:#000}
-    .capsule{display:none}
-    .side,.side.red{padding:44px 24px 48px;align-items:flex-start;text-align:left;justify-content:flex-start}
-    .side.red{order:2}.side.blue{order:3}
-    .side.red .go{justify-content:flex-start}
-    .last{grid-template-columns:1fr}
-    .last > div{padding:64px 24px}
-    .last .red{order:-1}
     .tiles{grid-template-columns:1fr 1fr}
     .app-grid{grid-template-columns:1fr}
+  }
+  /* tablets and narrow windows: keep the split */
+  @media (min-width:641px) and (max-width:900px){
+    .choice{min-height:max(100svh,760px)}
+    .headline{top:112px}
+    .headline h1{font-size:clamp(60px,10.5vw,92px)}
+    .headline p{font-size:16px}
+    .capsule{width:190px;top:52%}
+    .side{padding:0 28px 40px}
+    .side h2{font-size:clamp(34px,5vw,44px)}
+    .side p{font-size:15px}
+    .side .go{margin-top:22px;gap:12px}
+    .side .btn{padding:13px 20px;font-size:15px}
+    .price{font-size:28px}.price s{font-size:18px}
+    .last > div{padding:72px 32px}
+  }
+  .side .m{display:none}
+  /* phones: same split as desktop, sized down */
+  @media (max-width:640px){
+    .choice{min-height:max(100svh,800px)}
+    .side{flex:1 1 0;min-width:0}
+    .headline{top:88px;padding:0 12px}
+    .headline h1{font-size:clamp(46px,16vw,68px);line-height:.86}
+    .headline p{font-size:14px;margin-top:12px;padding:0 20px}
+    .capsule{width:min(38vw,160px);top:385px}
+    .side{padding:0 14px 28px}
+    .side .tag{font-size:12px}
+    .side h2{font-size:clamp(24px,7.4vw,30px);margin:6px 0 8px}
+    .side p{font-size:13px;line-height:1.45}
+    .side .d{display:none}.side .m{display:inline}
+    .side .go{margin-top:14px;gap:10px;flex-direction:column}
+    .side.blue .go{align-items:flex-start}
+    .side.red .go{align-items:flex-end}
+    .side .btn{padding:11px 14px;font-size:13px;gap:6px}
+    .side .btn svg{width:15px;height:15px}
+    .price{font-size:24px;gap:5px}.price s{font-size:15px}.price small{font-size:12px}
+    .last{grid-template-columns:1fr}
+    .last > div{padding:64px 24px}
   }
   @media (max-width:640px){
     .wrap{padding:0 16px}
@@ -322,6 +380,7 @@
       <a class="hide-md" href="#dashboard">Dashboard</a>
       <a class="hide-md" href="#members">Members</a>
       <a class="hide-md" href="#compare">Free vs Red</a>
+      <a class="hide-md" href="#follow">Follow TFK</a>
       <a class="login" data-link="dashboard" href="https://dashboard.redpilltraders.com/">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
         Member login
@@ -343,7 +402,7 @@
     <div class="side blue">
       <div class="tag">Blue pill · free</div>
       <h2>Join the<br>Discord</h2>
-      <p>Hang out with the community, see how we talk about the market and meet the traders. No card needed.</p>
+      <p><span class="d">Hang out with the community, see how we talk about the market and meet the traders. No card needed.</span><span class="m">Meet the community. No card needed.</span></p>
       <div class="go">
         <a class="btn btn-white" data-link="discord" href="https://discord.com/invite/xEvvyYxjez">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.5 19.5 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18.1a19.8 19.8 0 0 0 6 3l1.3-2a12.7 12.7 0 0 1-2-1l.5-.4a14 14 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.7 19.7 0 0 0 6-3c.5-5.2-.9-9.7-3.6-13.7ZM8 15.4c-1.2 0-2.2-1.1-2.2-2.4S6.8 10.6 8 10.6s2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>
@@ -354,8 +413,8 @@
 
     <div class="side red">
       <div class="tag">Red pill · full access</div>
-      <h2>Watch a <span style="white-space:nowrap">full-time</span><br>trader, live</h2>
-      <p>TFK trades the NY session live 5 days a week. You also get group calls twice a week, the full supply and demand system, the RedPill Dashboard and direct access to TFK.</p>
+      <h2><span class="d">Watch a <span style="white-space:nowrap">full-time</span><br>trader, live</span><span class="m">Watch TFK live</span></h2>
+      <p><span class="d">TFK trades the NY session live 5 days a week. You also get group calls twice a week, the full supply and demand system, the RedPill Dashboard and direct access to TFK.</span><span class="m">TFK trades the NY session live, 5 days a week.</span></p>
       <div class="go">
         <span class="price num"><s>$150</s>$120<small>/mo</small></span>
         <a class="btn btn-white" data-link="whop" href="https://whop.com/timeframeking/products/red-pill-discord-access/">Take the red pill</a>
@@ -594,6 +653,35 @@
     </div>
   </section>
 
+  <!-- ============ Follow TFK ============ -->
+  <section class="follow" id="follow">
+    <div class="wrap">
+      <div>
+        <div class="handle">@timeframeking</div>
+        <h2 class="h">Follow TFK</h2>
+        <p class="intro">See how TFK trades before you join. Free content on every platform.</p>
+      </div>
+      <div class="socials">
+        <a class="social" href="https://www.youtube.com/@timeframeking" target="_blank" rel="noopener">
+          <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.8 15V9l5.8 3-5.8 3Z"/></svg></span>
+          <span><b>YouTube</b><span>Full breakdowns and lessons</span></span>
+        </a>
+        <a class="social" href="https://www.tiktok.com/@timeframeking" target="_blank" rel="noopener">
+          <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.8 5.8 0 1 0 5 5.7V9.1a7.4 7.4 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.3-1.6Z"/></svg></span>
+          <span><b>TikTok</b><span>Short clips from the sessions</span></span>
+        </a>
+        <a class="social" href="https://x.com/timeframeking" target="_blank" rel="noopener">
+          <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.3L2 3h6.4l4.4 5.8L17.8 3Zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5Z"/></svg></span>
+          <span><b>X</b><span>Market takes during the day</span></span>
+        </a>
+        <a class="social" href="https://www.instagram.com/timeframeking/" target="_blank" rel="noopener">
+          <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2Zm0 4.9a4.9 4.9 0 1 0 0 9.8 4.9 4.9 0 0 0 0-9.8Zm0 8.1a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4Zm5.1-9.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z"/></svg></span>
+          <span><b>Instagram</b><span>Behind the scenes</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Final choice ============ -->
   <div class="last">
     <div class="blue">
@@ -613,6 +701,7 @@
   <div class="wrap">
     <div class="top">
       <a class="logo" href="#top"><i aria-hidden="true"></i>Red Pill</a>
+      <div class="soc"><a href="https://www.youtube.com/@timeframeking" target="_blank" rel="noopener" aria-label="TFK on YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.8 15V9l5.8 3-5.8 3Z"/></svg></a><a href="https://www.tiktok.com/@timeframeking" target="_blank" rel="noopener" aria-label="TFK on TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.8 5.8 0 1 0 5 5.7V9.1a7.4 7.4 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.3-1.6Z"/></svg></a><a href="https://x.com/timeframeking" target="_blank" rel="noopener" aria-label="TFK on X"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.3L2 3h6.4l4.4 5.8L17.8 3Zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5Z"/></svg></a><a href="https://www.instagram.com/timeframeking/" target="_blank" rel="noopener" aria-label="TFK on Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2Zm0 4.9a4.9 4.9 0 1 0 0 9.8 4.9 4.9 0 0 0 0-9.8Zm0 8.1a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4Zm5.1-9.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z"/></svg></a></div>
       <div class="links">
         <a data-link="discord" href="https://discord.com/invite/xEvvyYxjez">Free Discord</a>
         <a data-link="whop" href="https://whop.com/timeframeking/products/red-pill-discord-access/">Membership</a>
